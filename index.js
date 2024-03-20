@@ -25,6 +25,7 @@ async function run() {
         const db = client.db('assignment');
         const collection = db.collection('users');
         const supplies = db.collection('supplies');
+        const donations = db.collection('donations');
 
         // User Registration
         app.post('/api/v1/register', async (req, res) => {
@@ -165,13 +166,23 @@ async function run() {
         // Get User 
         app.get('/api/v1/users', async(req, res) => {
 
-            const users = await collection.find().toArray()
+            const users = await collection.find({},{projection: {name:1, email:1}}).toArray()
 
             res.status(200).json({
                 success: true,
-                message: 'User retrieved successfully',
+                message: 'Users retrieved successfully',
                 users
             });
+        })
+
+        // Add Donation
+        app.post('/api/v1/donate', async(req, res) => {
+            await donations.insertOne(req.body)
+
+            res.status(200).json({
+                success: true,
+                message: 'Donate successfully'
+            })
         })
         // ==============================================================
 
