@@ -161,6 +161,18 @@ async function run() {
                 data: result
             })
         })
+
+        // Get User 
+        app.get('/api/v1/user/:id', async(req, res) => {
+            const {id} = req.params;
+            const user = await collection.findOne({_id: new ObjectId(id)}, {projection: {name:1, email:1}})
+
+            res.status(200).json({
+                success: true,
+                message: 'User retrieved successfully',
+                user
+            });
+        })
         // ==============================================================
 
 
