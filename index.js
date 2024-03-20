@@ -163,14 +163,14 @@ async function run() {
         })
 
         // Get User 
-        app.get('/api/v1/user/:id', async(req, res) => {
-            const {id} = req.params;
-            const user = await collection.findOne({_id: new ObjectId(id)}, {projection: {name:1, email:1}})
+        app.get('/api/v1/users', async(req, res) => {
+
+            const users = await collection.find().toArray()
 
             res.status(200).json({
                 success: true,
                 message: 'User retrieved successfully',
-                user
+                users
             });
         })
         // ==============================================================
