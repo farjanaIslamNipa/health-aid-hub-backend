@@ -26,6 +26,9 @@ async function run() {
         const collection = db.collection('users');
         const supplies = db.collection('supplies');
         const donations = db.collection('donations');
+        const comments = db.collection('comments');
+        const testimonials = db.collection('testimonials');
+        const volunteers = db.collection('volunteers');
 
         // User Registration
         app.post('/api/v1/register', async (req, res) => {
@@ -184,8 +187,82 @@ async function run() {
                 message: 'Donate successfully'
             })
         })
-        // ==============================================================
 
+        // Get all donors
+        app.get('/api/v1/leaderboard', async(req, res) => {
+            const result = await donations.find().toArray()
+
+            res.status(200).json({
+                success: true,
+                message: 'Donations retrieved successfully',
+                donations: result
+            })
+        })
+
+        // Post comments
+        app.post('/api/v1/add-comment', async(req, res) => {
+            await comments.insertOne(req.body)
+
+            res.status(200).json({
+                success: true,
+                message: 'Comment published successfully',
+            })
+        })
+
+        // Get comments
+        app.get('/api/v1/comments', async(req, res) => {
+           const result = await comments.find().toArray()
+
+            res.status(200).json({
+                success: true,
+                message: 'Comments retrieved successfully',
+                comments: result
+            })
+        })
+
+        // Post Testimonial
+        app.post('/api/v1/add-testimonial', async(req, res) => {
+            await testimonials.insertOne(req.body)
+
+            res.status(200).json({
+                success: true,
+                message: 'Testimonial added successfully',
+            })
+        })
+        // Get Testimonials
+        app.get('/api/v1/testimonials', async(req, res) => {
+            const result = await testimonials.find().toArray()
+
+            res.status(200).json({
+                success: true,
+                message: 'Testimonial retrieved successfully',
+                testimonials: result
+            })
+        })
+
+        // Register as volunteer
+        app.post('/api/v1/add-volunteer', async(req, res) => {
+            await volunteers.insertOne(req.body)
+
+            res.status(200).json({
+                success: true,
+                message: 'Volunteer added successfully',
+            })
+        })
+        // Get volunteers
+        app.get('/api/v1/volunteers', async(req, res) => {
+            const result = await volunteers.find().toArray()
+
+            res.status(200).json({
+                success: true,
+                message: 'Volunteers retrieved successfully',
+                volunteers: result
+            })
+        })
+
+     
+        // ==============================================================
+        
 
         // Start the server
         app.listen(port, () => {
